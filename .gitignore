@@ -49,3 +49,6 @@ debug/
 # Temporary files
 *.tmp
 *.temp
+
+# Release files
+.releaserc
