@@ -18,7 +18,7 @@ A powerful TypeScript library for converting HTML content to plain text while pr
 ## Installation
 
 ```bash
-npm install xxx
+npm i html-to-text-converter
 ```
 
 ## Quick Start
@@ -125,9 +125,6 @@ const converter = new HtmlToText({
 });
 ```
 
-## API Documentation
-
-Full API documentation is available at xxx
 
 ## Contributing
 
