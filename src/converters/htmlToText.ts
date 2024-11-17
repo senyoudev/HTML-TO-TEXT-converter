@@ -43,7 +43,7 @@ export class HtmlToText {
       return '';
     }
     const title = document.title?.trim() || '';
-    if (!title) return '';
+    if (!title || title === undefined) return '';
 
     switch (this.options.titleStyle) {
       case 'uppercase':
@@ -272,6 +272,8 @@ export class HtmlToText {
       if (currentLine) {
         result += currentLine;
       }
+
+      return result
     });
 
     return wrappedLines.join('\n');
