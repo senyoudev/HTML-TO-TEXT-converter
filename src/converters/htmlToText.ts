@@ -196,7 +196,7 @@ export class HtmlToText {
     let text = '';
     const cells = row.querySelectorAll('td, th');
     for (const cell of cells) {
-      text += this.processChildren(cell) + '\t'; 
+      text += this.processChildren(cell) + '\t';
     }
     return text + '\n';
   }
@@ -214,7 +214,61 @@ export class HtmlToText {
       text = text.replace(/\n+/g, ' ');
     }
 
+    text = this.applyWordWrap(text.trim());
+
     return text.trim();
+  }
+
+  private applyWordWrap(text: string): string {
+    if (!this.options.wordwrap || typeof this.options.wordwrap !== 'number') {
+      return text;
+    }
+
+    this.debug('Applying word wrap', {
+      width: this.options.wordwrap,
+      originalText: text,
+    });
+
+    const width = this.options.wordwrap;
+    const lines = text.split('\n');
+
+    const wrappedLines = lines.map((line) => {
+        // Skip empty lines
+        if(line.trim() === '') return line;
+
+        // Split the line into words
+        const words = line.split(' ');
+        let result = '';
+        let currentLine = '';
+
+        words.forEach((word) => {
+          // Check if adding this word would exceed the width
+          const testLine = currentLine ? `${currentLine} ${word}` : word;
+          if(testLine.length <= width) {
+            currentLine = testLine;
+          } else {
+            if(currentLine) {
+                result += `${currentLine}\n`;
+            }
+
+            // Check if the word itself exceeds the width
+            if(word.length > width) {
+                while(word.length > width) {
+                    result += `${word.slice(0, width)}\n`;
+                    word = word.slice(width);
+                }
+            } 
+            currentLine = word;
+          }
+        })
+
+        // Append the last line
+        if(currentLine) {
+            result += currentLine;
+        }
+    })
+
+    return wrappedLines.join('\n');
   }
 
   /**
