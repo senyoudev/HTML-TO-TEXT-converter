@@ -19,7 +19,8 @@
     "semantic-release": "semantic-release",
     "example:basic": "ts-node examples/basic-usage.ts",
     "example:advanced": "ts-node examples/advanced-usage.ts",
-    "example:replacements": "ts-node examples/custom-replacements.ts"
+    "example:replacements": "ts-node examples/custom-replacements.ts",
+    "examples": "npm run example:basic && echo '\n' && npm run example:advanced && echo '\n' && npm run example:replacements"
   },
   "keywords": [
     "html",
