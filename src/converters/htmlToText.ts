@@ -134,7 +134,19 @@ export class HtmlToText {
   }
 
   private processImage(element: Element): string {
-    return '';
+    if (!this.options.preserveImages) return '';
+    const src = element.getAttribute('src');
+    const alt = element.getAttribute('alt');
+
+    if (alt && src) {
+      return `[Image: ${alt} (${src})]`;
+    } else if (alt) {
+      return `[Image: ${alt}]`;
+    } else if (src) {
+      return `[Image: ${src}]`;
+    }
+
+    return '[Image]';
   }
 
   private processList(element: Element): string {
