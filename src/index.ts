@@ -24,6 +24,11 @@ const html = `
         <li>Item 1</li>
         <li>Item 2</li>
         <li>Item 3</li>
+        <ul>
+            <li>Subitem 1</li>
+            <li>Subitem 2</li>
+            <li>Subitem 3</li>
+        </ul>
       </ol>
     </div>
     <div id="hero">

@@ -112,6 +112,10 @@ export class HtmlToText {
       case 'table':
         return this.processTable(element) + '\n\n';
 
+      case 'script':
+      case 'style':
+        return '';
+
       default:
         return this.processChildren(element);
     }
@@ -154,7 +158,13 @@ export class HtmlToText {
     let text = '';
     const items = element.querySelectorAll('li');
 
+    // TODO: Handle nested lists
     for (const item of items) {
+      const nestedList = item.querySelector('ul, ol');
+      if (nestedList) {
+        text += `• ${this.processChildren(item)}\n`;
+        text += this.processList(nestedList);
+      } 
       text += `• ${this.processChildren(item)}\n`;
     }
     return text;
@@ -186,6 +196,10 @@ export class HtmlToText {
    * @returns The plain text
    */
   convert(html: string): string {
+    if (!html || html.trim() === '') {
+      return '';
+    }
+
     try {
       const document = DOMParser.parse(html);
       let result = '';
