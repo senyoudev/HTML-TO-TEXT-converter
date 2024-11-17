@@ -2,6 +2,7 @@ import { DEFAULT_OPTIONS } from '@/lib/constants';
 import { ConversionOptions } from '@/lib/types';
 import { Logger } from '@/lib/utils/logger';
 import { DOMParser } from '@/lib/utils/dom';
+import { HtmlToTextConversionError } from '@/lib/errors';
 
 
 /**
@@ -196,11 +197,14 @@ export class HtmlToText {
       result += this.processNode(document.body);
       this.debug('Processed content:', { result });
 
+      // TODO: apply custom replacements
+
       return this.normalizeWhitespace(result);
     } catch (error) {
       this.debug(
         `Failed to convert HTML to text: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
+      throw new HtmlToTextConversionError('Failed to convert HTML to text', { error });
     }
     return html;
   }
