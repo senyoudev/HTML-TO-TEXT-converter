@@ -62,7 +62,103 @@ export class HtmlToText {
   private processMetaDescription(document: Document): string {
     if (!this.options.includeMetaDescription) return '';
     const metaDescription = document.querySelector('meta[name="description"]');
-    return metaDescription?.getAttribute('content')?.trim() || '';
+    return `${metaDescription?.getAttribute('content')?.trim()}\n` || '';
+  }
+
+  private processNode(node: Node): string {
+    // If the node is a text node, return the text content
+    if (node.nodeType === node.TEXT_NODE) {
+      return node.textContent?.trim() || '';
+    }
+
+    // If the node is not an element, return an empty string
+    if (node.nodeType !== node.ELEMENT_NODE) {
+      return '';
+    }
+
+    const element = node as Element;
+    const tag = element.tagName.toLowerCase();
+
+    switch (tag) {
+      case 'br':
+        return '\n';
+      case 'p':
+      case 'div':
+      case 'section':
+      case 'article':
+        return this.processChildren(element) + '\n\n';
+
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        return this.processChildren(element).toUpperCase() + '\n\n';
+      case 'a':
+        return this.processLink(element);
+
+      case 'img':
+        return this.processImage(element);
+
+      case 'ul':
+      case 'ol':
+        return this.processList(element) + '\n';
+
+      case 'li':
+        return `• ${this.processChildren(element)}\n`;
+
+      case 'table':
+        return this.processTable(element) + '\n\n';
+
+      default:
+        return this.processChildren(element);
+    }
+  }
+
+  private processChildren(element: Element): string {
+    let result = '';
+    for (const child of element.childNodes) {
+      result += this.processNode(child);
+    }
+    return result;
+  }
+
+  private processLink(element: Element): string {
+    const href = element.getAttribute('href');
+    const text = this.processChildren(element);
+    if (this.options.preserveLinks) {
+      return `${text} (${href})`;
+    }
+    return text;
+  }
+
+  private processImage(element: Element): string {
+    return '';
+  }
+
+  private processList(element: Element): string {
+    return '';
+  }
+
+  private processTable(element: Element): string {
+    return '';
+  }
+
+  private normalizeWhitespace(text: string): string {
+    // Replace multiple spaces with a single space
+    text = text.replace(/[ \t]+/g, ' ');
+
+    // Handle newlines based on options
+    if (this.options.preserveNewlines) {
+      // Limit consecutive newlines to 2
+      text = text.replace(/\n{3,}/g, '\n\n');
+    } else {
+      // Replace all newlines with spaces
+      text = text.replace(/\n+/g, ' ');
+    }
+
+    return text.trim();
   }
 
   /**
@@ -79,7 +175,10 @@ export class HtmlToText {
       this.debug('Title and metadescription are:', { result });
 
       // Process the content
+      result += this.processNode(document.body);
+      this.debug('Processed content:', { result });
 
+      return this.normalizeWhitespace(result);
     } catch (error) {
       this.debug(
         `Failed to convert HTML to text: ${error instanceof Error ? error.message : 'Unknown error'}`,
