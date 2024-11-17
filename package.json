@@ -55,6 +55,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "html-to-text-conv": "^1.0.1",
     "jsdom": "^25.0.1",
     "tsconfig-paths": "^4.2.0",
     "winston": "^3.17.0"

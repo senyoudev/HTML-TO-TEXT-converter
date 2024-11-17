@@ -65,6 +65,7 @@ export class HtmlToText {
   private processMetaDescription(document: Document): string {
     if (!this.options.includeMetaDescription) return '';
     const metaDescription = document.querySelector('meta[name="description"]');
+    if(!metaDescription || metaDescription === undefined) return '';
     return `${metaDescription?.getAttribute('content')?.trim()}\n` || '';
   }
 
