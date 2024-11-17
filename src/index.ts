@@ -15,6 +15,19 @@ const html = `
     <div id="main">
       <p>Hello, World!</p>
       <a href="https://example.com">Example</a>
+      <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ul>
+      <ol>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ol>
+    </div>
+    <div id="hero">
+        <img src="hero.jpg" alt="Hero Image"/>
     </div>
   </body>
   </html>

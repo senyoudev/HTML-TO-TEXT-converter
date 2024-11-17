@@ -150,7 +150,13 @@ export class HtmlToText {
   }
 
   private processList(element: Element): string {
-    return '';
+    let text = '';
+    const items = element.querySelectorAll('li');
+
+    for (const item of items) {
+      text += `• ${this.processChildren(item)}\n`;
+    }
+    return text;
   }
 
   private processTable(element: Element): string {
