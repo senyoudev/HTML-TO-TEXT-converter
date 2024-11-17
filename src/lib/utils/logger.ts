@@ -24,7 +24,7 @@ const transports = [
   new winston.transports.File({ filename: 'logs/combined.log' }),
 ];
 
-class Logger {
+export class Logger {
   private logger: winston.Logger;
   private debugMode: boolean;
 

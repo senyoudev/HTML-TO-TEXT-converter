@@ -1,4 +1,4 @@
-import { ConversionOptions } from "./types";
+import { ConversionOptions } from './types';
 
 export const DEFAULT_OPTIONS: Required<ConversionOptions> = {
   preserveNewlines: true,
@@ -7,4 +7,7 @@ export const DEFAULT_OPTIONS: Required<ConversionOptions> = {
   preserveImages: true,
   customReplacements: [],
   debugMode: false,
+  includeTitle: true,
+  includeMetaDescription: true,
+  titleStyle: 'uppercase'
 };

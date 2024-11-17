@@ -5,4 +5,7 @@ export interface ConversionOptions {
   preserveImages?: boolean; // Keep image information in the text
   customReplacements?: Array<[RegExp, string]>; // Custom replacements to apply to the text
   debugMode?: boolean; // Whether to output debug information
+  includeTitle?: boolean;
+  includeMetaDescription?: boolean;
+  titleStyle?: 'uppercase' | 'lowercase' | 'capitalize';
 }
