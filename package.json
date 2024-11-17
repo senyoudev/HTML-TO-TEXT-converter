@@ -1,7 +1,8 @@
 {
   "name": "html-to-text-converter",
-  "version": "1.0.1",
-  "main": "index.js",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "node -r tsconfig-paths/register dist/index.js",
     "build": "rimraf dist && tsc && tsc-alias",
@@ -15,7 +16,10 @@
     "docs": "typedoc --out docs src",
     "clean": "rimraf dist coverage docs",
     "dev": "tsc -w",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "example:basic": "node ./examples/basic-usage.js",
+    "example:advanced": "ts-node examples/advanced-usage.ts",
+    "example:replacements": "ts-node examples/custom-replacements.ts"
   },
   "keywords": [
     "html",
@@ -51,6 +55,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "html-to-text-converter": "^1.0.1",
     "jsdom": "^25.0.1",
     "tsconfig-paths": "^4.2.0",
     "winston": "^3.17.0"
