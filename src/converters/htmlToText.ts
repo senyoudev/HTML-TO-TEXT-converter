@@ -2,6 +2,8 @@ import { DEFAULT_OPTIONS } from '@/lib/constants';
 import { ConversionOptions } from '@/lib/types';
 import { Logger } from '@/lib/utils/logger';
 import { DOMParser } from '@/lib/utils/dom';
+
+
 /**
  * Converts HTML to plain text.
  * @param options Conversion options
@@ -77,7 +79,7 @@ export class HtmlToText {
       this.debug('Title and metadescription are:', { result });
 
       // Process the content
-        
+
     } catch (error) {
       this.debug(
         `Failed to convert HTML to text: ${error instanceof Error ? error.message : 'Unknown error'}`,

@@ -5,7 +5,7 @@ export interface ConversionOptions {
   preserveImages?: boolean; // Keep image information in the text
   customReplacements?: Array<[RegExp, string]>; // Custom replacements to apply to the text
   debugMode?: boolean; // Whether to output debug information
-  includeTitle?: boolean;
-  includeMetaDescription?: boolean;
-  titleStyle?: 'uppercase' | 'lowercase' | 'capitalize';
+  includeTitle?: boolean; // Whether to include the title in the output
+  includeMetaDescription?: boolean; // Whether to include the meta description in the output
+  titleStyle?: 'uppercase' | 'lowercase' | 'capitalize'; // The style to apply to the title
 }
