@@ -18,13 +18,13 @@ A powerful TypeScript library for converting HTML content to plain text while pr
 ## Installation
 
 ```bash
-npm i html-to-text-convert
+npm i html-to-text-conv
 ```
 
 ## Quick Start
 
 ```typescript
-import { HtmlToText } from 'html-to-text-convert';
+import { HtmlToText } from 'html-to-text-conv';
 
 const converter = new HtmlToText();
 const text = converter.convert('<h1>Hello World</h1><p>This is a test</p>');

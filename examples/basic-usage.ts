@@ -1,4 +1,4 @@
-import { htmlToText } from 'html-to-text-convert';
+import { htmlToText } from 'html-to-text-conv';
 
 /**
  * Basic Usage Example
