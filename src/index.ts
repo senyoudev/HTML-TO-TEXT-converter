@@ -54,6 +54,14 @@ const html = `
             </tbody>
         </table>
     </div>
+    <div id='custom-replacements'>
+        <p>JavaScript code costs $1000.50</p>
+        <p>This is important warning text</p>
+        <p>Date: 25/12/2023</p>
+        <p>Temperature: 20°C</p>
+        <p>Time: 2:30pm</p>
+        <p>Phone: 1234567890</p>
+  </div>
   </body>
   </html>
 `;

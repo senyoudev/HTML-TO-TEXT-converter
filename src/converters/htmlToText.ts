@@ -276,6 +276,41 @@ export class HtmlToText {
     return wrappedLines.join('\n');
   }
 
+  private applyCustomReplacements(text: string): string {
+    if (!this.options.customReplacements?.length) return text;
+
+    this.debug('Applying custom replacements', {
+      replacements: this.options.customReplacements,
+      originalText: text,
+    });
+
+    const result = this.options.customReplacements.reduce(
+      (currText, [pattern, replacement]) => {
+        try {
+            if(typeof replacement === 'string') {
+                return currText.replace(pattern, replacement);
+            } else {
+                return currText.replace(pattern, replacement);
+            }
+        } catch (error) {
+          this.debug('Error applying replacement', {
+            pattern,
+            replacement,
+            error,
+          });
+          // Continue with other replacements if one fails
+          return currText;
+        }
+      },text);
+
+    this.debug('Custom replacements applied', {
+      originalText: text,
+      resultText: result,
+    });
+
+    return result;
+  }
+
   /**
    * Converts HTML to plain text.
    * @param html The HTML to convert
@@ -293,11 +328,11 @@ export class HtmlToText {
       result += this.processMetaDescription(document);
       this.debug('Title and metadescription are:', { result });
 
-      // Process the content
       result += this.processNode(document.body);
       this.debug('Processed content:', { result });
 
-      // TODO: apply custom replacements
+      result = this.applyCustomReplacements(result);
+      this.debug('Applied custom replacements:', { result });
 
       return this.normalizeWhitespace(result);
     } catch (error) {
@@ -308,6 +343,5 @@ export class HtmlToText {
         error,
       });
     }
-    return html;
   }
 }
