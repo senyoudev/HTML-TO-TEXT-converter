@@ -3,6 +3,7 @@ import { ConversionOptions } from '@/lib/types';
 import { Logger } from '@/lib/utils/logger';
 import { DOMParser } from '@/lib/utils/dom';
 import { HtmlToTextConversionError } from '@/lib/errors';
+import { rowsMode, cellsMode } from '@/lib/types';
 
 
 /**
@@ -163,7 +164,7 @@ export class HtmlToText {
       if (nestedList) {
         text += `• ${this.processChildren(item)}\n`;
         text += this.processList(nestedList);
-      } 
+      }
       text += `• ${this.processChildren(item)}\n`;
     }
     return text;
@@ -172,14 +173,32 @@ export class HtmlToText {
   private processTable(element: Element): string {
     let text = '';
     const rows = element.querySelectorAll('tr');
-    for(const row of rows) {
-        const cells = row.querySelectorAll('td, th');
-        for(const cell of cells) {
-            text += this.processChildren(cell) + '\t';
+
+    if (this.options.tableReadingMode === rowsMode) {
+      for (const row of rows) {
+        text += this.processRow(row);
+      }
+    } else if (this.options.tableReadingMode === cellsMode) {
+      const numOfCols = rows[0].querySelectorAll('td, th').length;
+
+      for (let colIdx = 0; colIdx < numOfCols; colIdx++) {
+        for (const row of rows) {
+          const cell = row.cells[colIdx];
+          text += this.processChildren(cell) + '\t';
         }
         text += '\n';
+      }
     }
     return text;
+  }
+
+  private processRow(row: Element): string {
+    let text = '';
+    const cells = row.querySelectorAll('td, th');
+    for (const cell of cells) {
+      text += this.processChildren(cell) + '\t'; 
+    }
+    return text + '\n';
   }
 
   private normalizeWhitespace(text: string): string {
@@ -226,7 +245,9 @@ export class HtmlToText {
       this.debug(
         `Failed to convert HTML to text: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
-      throw new HtmlToTextConversionError('Failed to convert HTML to text', { error });
+      throw new HtmlToTextConversionError('Failed to convert HTML to text', {
+        error,
+      });
     }
     return html;
   }

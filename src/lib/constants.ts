@@ -1,4 +1,4 @@
-import { ConversionOptions } from './types';
+import { capitalize, cellsMode, ConversionOptions,  } from './types';
 
 export const DEFAULT_OPTIONS: Required<ConversionOptions> = {
   preserveNewlines: true,
@@ -9,5 +9,6 @@ export const DEFAULT_OPTIONS: Required<ConversionOptions> = {
   debugMode: false,
   includeTitle: true,
   includeMetaDescription: true,
-  titleStyle: 'uppercase'
+  titleStyle: capitalize,
+  tableReadingMode: cellsMode,
 };

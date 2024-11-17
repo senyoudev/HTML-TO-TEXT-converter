@@ -7,5 +7,21 @@ export interface ConversionOptions {
   debugMode?: boolean; // Whether to output debug information
   includeTitle?: boolean; // Whether to include the title in the output
   includeMetaDescription?: boolean; // Whether to include the meta description in the output
-  titleStyle?: 'uppercase' | 'lowercase' | 'capitalize'; // The style to apply to the title
+  titleStyle?: titleStyle // The style to apply to the title
+  tableReadingMode?: tableReadingMode; // The mode to use when reading tables
 }
+
+enum titleStyle {
+  uppercase = 'uppercase',
+  lowercase = 'lowercase',
+  capitalize = 'capitalize',
+}
+
+enum tableReadingMode {
+  rowsMode = 'rows',
+  cellsMode = 'cells',
+}
+
+
+export const { uppercase, lowercase, capitalize } = titleStyle;
+export const { rowsMode, cellsMode } = tableReadingMode;
