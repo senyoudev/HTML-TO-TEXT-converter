@@ -3,7 +3,8 @@ import { ConversionOptions } from '@/lib/types';
 import { Logger } from '@/lib/utils/logger';
 import { DOMParser } from '@/lib/utils/dom';
 import { HtmlToTextConversionError } from '@/lib/errors';
-import { rowsMode, cellsMode } from '@/lib/types';
+import { TableReadingMode } from '@/lib/types';
+const { rowsMode, cellsMode } = TableReadingMode;
 
 
 /**

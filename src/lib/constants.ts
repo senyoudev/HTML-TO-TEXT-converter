@@ -1,4 +1,6 @@
-import { capitalize, cellsMode, ConversionOptions,  } from './types';
+import { TableReadingMode, ConversionOptions, TitleStyle  } from './types';
+const { rowsMode, cellsMode } = TableReadingMode;
+const { uppercase, lowercase, capitalize, preserve } = TitleStyle;
 
 export const DEFAULT_OPTIONS: Required<ConversionOptions> = {
   preserveNewlines: true,

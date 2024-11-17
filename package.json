@@ -17,7 +17,7 @@
     "clean": "rimraf dist coverage docs",
     "dev": "tsc -w",
     "semantic-release": "semantic-release",
-    "example:basic": "node ./examples/basic-usage.js",
+    "example:basic": "ts-node examples/basic-usage.ts",
     "example:advanced": "ts-node examples/advanced-usage.ts",
     "example:replacements": "ts-node examples/custom-replacements.ts"
   },
@@ -55,6 +55,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "html-to-text-convert": "^1.0.0",
     "jsdom": "^25.0.1",
     "tsconfig-paths": "^4.2.0",
     "winston": "^3.17.0"
