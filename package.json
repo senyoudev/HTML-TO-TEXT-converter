@@ -1,5 +1,5 @@
 {
-  "name": "html-to-text-converter",
+  "name": "html-to-text-convert",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -55,7 +55,6 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "html-to-text-converter": "^1.0.1",
     "jsdom": "^25.0.1",
     "tsconfig-paths": "^4.2.0",
     "winston": "^3.17.0"
