@@ -24,7 +24,7 @@ npm i html-to-text-converter
 ## Quick Start
 
 ```typescript
-import { HtmlToText } from 'xxx';
+import { HtmlToText } from 'html-to-text-converter';
 
 const converter = new HtmlToText();
 const text = converter.convert('<h1>Hello World</h1><p>This is a test</p>');
