@@ -158,7 +158,6 @@ export class HtmlToText {
     let text = '';
     const items = element.querySelectorAll('li');
 
-    // TODO: Handle nested lists
     for (const item of items) {
       const nestedList = item.querySelector('ul, ol');
       if (nestedList) {
@@ -171,7 +170,16 @@ export class HtmlToText {
   }
 
   private processTable(element: Element): string {
-    return '';
+    let text = '';
+    const rows = element.querySelectorAll('tr');
+    for(const row of rows) {
+        const cells = row.querySelectorAll('td, th');
+        for(const cell of cells) {
+            text += this.processChildren(cell) + '\t';
+        }
+        text += '\n';
+    }
+    return text;
   }
 
   private normalizeWhitespace(text: string): string {
