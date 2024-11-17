@@ -219,6 +219,11 @@ export class HtmlToText {
     return text.trim();
   }
 
+  /**
+   * Wraps text at the specified width.
+   * @param text Text to wrap
+   * @returns Wrapped text
+   */
   private applyWordWrap(text: string): string {
     if (!this.options.wordwrap || typeof this.options.wordwrap !== 'number') {
       return text;
@@ -233,40 +238,40 @@ export class HtmlToText {
     const lines = text.split('\n');
 
     const wrappedLines = lines.map((line) => {
-        // Skip empty lines
-        if(line.trim() === '') return line;
+      // Skip empty lines
+      if (line.trim() === '') return line;
 
-        // Split the line into words
-        const words = line.split(' ');
-        let result = '';
-        let currentLine = '';
+      // Split the line into words
+      const words = line.split(' ');
+      let result = '';
+      let currentLine = '';
 
-        words.forEach((word) => {
-          // Check if adding this word would exceed the width
-          const testLine = currentLine ? `${currentLine} ${word}` : word;
-          if(testLine.length <= width) {
-            currentLine = testLine;
-          } else {
-            if(currentLine) {
-                result += `${currentLine}\n`;
-            }
-
-            // Check if the word itself exceeds the width
-            if(word.length > width) {
-                while(word.length > width) {
-                    result += `${word.slice(0, width)}\n`;
-                    word = word.slice(width);
-                }
-            } 
-            currentLine = word;
+      words.forEach((word) => {
+        // Check if adding this word would exceed the width
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        if (testLine.length <= width) {
+          currentLine = testLine;
+        } else {
+          if (currentLine) {
+            result += `${currentLine}\n`;
           }
-        })
 
-        // Append the last line
-        if(currentLine) {
-            result += currentLine;
+          // Check if the word itself exceeds the width
+          if (word.length > width) {
+            while (word.length > width) {
+              result += `${word.slice(0, width)}\n`;
+              word = word.slice(width);
+            }
+          }
+          currentLine = word;
         }
-    })
+      });
+
+      // Append the last line
+      if (currentLine) {
+        result += currentLine;
+      }
+    });
 
     return wrappedLines.join('\n');
   }
