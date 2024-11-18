@@ -1,0 +1,9 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "name": "HTML to Text Converter",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "theme": "default",
+  "readme": "README.md"
+}

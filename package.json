@@ -13,7 +13,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepublishOnly": "npm run build",
-    "docs": "typedoc --out docs src",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
     "clean": "rimraf dist coverage docs",
     "dev": "tsc -w",
     "test:file": "ts-node -r tsconfig-paths/register ./src/file.ts",
@@ -56,6 +57,7 @@
     "ts-jest": "^29.2.5",
     "tsc-alias": "^1.8.10",
     "typedoc": "^0.26.11",
+    "typedoc-plugin-markdown": "^4.2.10",
     "typescript": "^5.6.3"
   },
   "dependencies": {
