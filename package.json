@@ -16,6 +16,7 @@
     "docs": "typedoc --out docs src",
     "clean": "rimraf dist coverage docs",
     "dev": "tsc -w",
+    "test:file": "ts-node -r tsconfig-paths/register ./src/file.ts",
     "semantic-release": "semantic-release",
     "example:basic": "ts-node examples/basic-usage.ts",
     "example:advanced": "ts-node examples/advanced-usage.ts",
@@ -47,6 +48,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.6",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^25.0.1",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "semantic-release": "^24.2.0",
@@ -57,7 +60,6 @@
   },
   "dependencies": {
     "html-to-text-conv": "^1.0.1",
-    "jsdom": "^25.0.1",
     "tsconfig-paths": "^4.2.0",
     "winston": "^3.17.0"
   }

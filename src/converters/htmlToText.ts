@@ -1,11 +1,10 @@
-import { DEFAULT_OPTIONS } from '@/lib/constants';
 import { ConversionOptions } from '@/lib/types';
 import { Logger } from '@/lib/utils/logger';
 import { DOMParser } from '@/lib/utils/dom';
 import { HtmlToTextConversionError } from '@/lib/errors';
 import { TableReadingMode } from '@/lib/types';
+import { DEFAULT_OPTIONS } from '@/lib/constants';
 const { rowsMode, cellsMode } = TableReadingMode;
-
 
 /**
  * Converts HTML to plain text.
@@ -65,7 +64,7 @@ export class HtmlToText {
   private processMetaDescription(document: Document): string {
     if (!this.options.includeMetaDescription) return '';
     const metaDescription = document.querySelector('meta[name="description"]');
-    if(!metaDescription || metaDescription === undefined) return '';
+    if (!metaDescription || metaDescription === undefined) return '';
     return `${metaDescription?.getAttribute('content')?.trim()}\n` || '';
   }
 
@@ -135,6 +134,7 @@ export class HtmlToText {
   private processLink(element: Element): string {
     const href = element.getAttribute('href');
     const text = this.processChildren(element);
+    this.debug('Processing link', { href, text });
     if (this.options.preserveLinks) {
       return `${text} (${href})`;
     }
@@ -159,16 +159,38 @@ export class HtmlToText {
 
   private processList(element: Element): string {
     let text = '';
-    const items = element.querySelectorAll('li');
+    // Only get direct li children
+    const items = element.children;
 
     for (const item of items) {
-      const nestedList = item.querySelector('ul, ol');
+      if (item.tagName.toLowerCase() !== 'li') continue;
+
+      // Get main content (excluding nested list)
+      const mainContent = item.cloneNode(true) as Element;
+      const nestedList = mainContent.querySelector('ul, ol');
       if (nestedList) {
-        text += `• ${this.processChildren(item)}\n`;
-        text += this.processList(nestedList);
+        nestedList.remove(); // Remove nested list from clone
       }
-      text += `• ${this.processChildren(item)}\n`;
+
+      const itemText = this.processChildren(mainContent).trim();
+      text += itemText ? `• ${itemText}\n` : '•\n';
+
+       // Process original nested list if exists
+       const originalNestedList = item.querySelector(
+         ':scope > ul, :scope > ol',
+       );
+       if (originalNestedList) {
+         // Process nested items with indentation
+         const nestedItems = this.processList(originalNestedList);
+         text +=
+           nestedItems
+             .split('\n')
+             .filter((line) => line.trim())
+             .map((line) => '  ' + line)
+             .join('\n') + '\n';
+       }
     }
+
     return text;
   }
 
@@ -199,6 +221,8 @@ export class HtmlToText {
     const cells = row.querySelectorAll('td, th');
     for (const cell of cells) {
       text += this.processChildren(cell) + '\t';
+      this.debug('Processed cell', { text });
+      console.log('Processed cell', { text });
     }
     return text + '\n';
   }
@@ -212,7 +236,6 @@ export class HtmlToText {
       // Limit consecutive newlines to 2
       text = text.replace(/\n{3,}/g, '\n\n');
     } else {
-      // Replace all newlines with spaces
       text = text.replace(/\n+/g, ' ');
     }
 
@@ -227,7 +250,7 @@ export class HtmlToText {
    * @returns Wrapped text
    */
   private applyWordWrap(text: string): string {
-    if (!this.options.wordwrap || typeof this.options.wordwrap !== 'number') {
+    if (!this.options.wordwrap || typeof this.options.wordwrap !== 'number' || this.options.wordwrap <= 0) {
       return text;
     }
 
@@ -274,7 +297,7 @@ export class HtmlToText {
         result += currentLine;
       }
 
-      return result
+      return result;
     });
 
     return wrappedLines.join('\n');
@@ -291,11 +314,11 @@ export class HtmlToText {
     const result = this.options.customReplacements.reduce(
       (currText, [pattern, replacement]) => {
         try {
-            if(typeof replacement === 'string') {
-                return currText.replace(pattern, replacement);
-            } else {
-                return currText.replace(pattern, replacement);
-            }
+          if (typeof replacement === 'string') {
+            return currText.replace(pattern, replacement);
+          } else {
+            return currText.replace(pattern, replacement);
+          }
         } catch (error) {
           this.debug('Error applying replacement', {
             pattern,
@@ -305,7 +328,9 @@ export class HtmlToText {
           // Continue with other replacements if one fails
           return currText;
         }
-      },text);
+      },
+      text,
+    );
 
     this.debug('Custom replacements applied', {
       originalText: text,

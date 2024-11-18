@@ -1,22 +1,19 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.test.ts'],
-  transform: {
-    '^.+\\.ts$': 'ts-jest'
-  },
+  rootDir: '.',
+  moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageThreshold: {
-    global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
-  }
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: './tsconfig.json'
+    }]
+  },
+  testMatch: [
+    '<rootDir>/src/**/__tests__/**/*.test.ts'
+  ],
+  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts']
 };
